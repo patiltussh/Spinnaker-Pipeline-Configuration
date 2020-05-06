@@ -1,0 +1,113 @@
+{
+  "disabled": false,
+  "expectedArtifacts": [
+    {
+      "defaultArtifact": {
+        "customKind": true,
+        "id": "8990a81c-4b1e-444c-9981-30a11973a3c2"
+      },
+      "displayName": "curly-stingray-17",
+      "id": "afe26c88-653f-4d45-aca4-e0587a4bf4dd",
+      "matchArtifact": {
+        "artifactAccount": "docker-registry",
+        "id": "a1a3f0bc-ce51-4337-a60f-d637580ed763",
+        "name": "index.docker.io/tusharstudy2020/webappimages",
+        "type": "docker/image"
+      },
+      "useDefaultArtifact": false,
+      "usePriorArtifact": true
+    }
+  ],
+  "keepWaitingPipelines": false,
+  "lastModifiedBy": "anonymous",
+  "limitConcurrent": true,
+  "stages": [
+    {
+      "expectedArtifacts": [
+        {
+          "defaultArtifact": {
+            "customKind": true,
+            "id": "bb6bed61-67a6-40eb-b5cf-cdae45658466"
+          },
+          "displayName": "tender-mole-93",
+          "id": "b98df93f-369b-4251-98f1-9692f4fdf388",
+          "matchArtifact": {
+            "artifactAccount": "embedded-artifact",
+            "id": "353ce21e-f0f4-48cb-aac1-477ce9d58376",
+            "name": "dev",
+            "type": "embedded/base64"
+          },
+          "useDefaultArtifact": false,
+          "usePriorArtifact": true
+        }
+      ],
+      "inputArtifacts": [
+        {
+          "account": "my-github-artifact-account",
+          "artifact": {
+            "artifactAccount": "my-github-artifact-account",
+            "id": "b1fb5fdf-b33d-49e6-88b0-a292bb08ab9e",
+            "name": "helm-template/helm-chart-0.1.0.tgz",
+            "reference": "https://api.github.com/repos/patiltussh/webapp-helm/contents/helm-template/helm-chart-0.1.0.tgz",
+            "type": "github/file"
+          }
+        },
+        {
+          "account": "my-github-artifact-account",
+          "artifact": {
+            "artifactAccount": "my-github-artifact-account",
+            "id": "bcb17283-8fd9-42b2-a569-9ba26bcc526b",
+            "name": "values/dev.yml",
+            "reference": "https://api.github.com/repos/patiltussh/webapp-helm/contents/values/dev.yml",
+            "type": "github/file"
+          }
+        }
+      ],
+      "name": "Bake (Manifest)",
+      "namespace": "dev",
+      "outputName": "dev",
+      "overrides": {},
+      "refId": "1",
+      "requisiteStageRefIds": [],
+      "templateRenderer": "HELM2",
+      "type": "bakeManifest"
+    },
+    {
+      "account": "kubernetes-admin",
+      "cloudProvider": "kubernetes",
+      "manifestArtifactId": "b98df93f-369b-4251-98f1-9692f4fdf388",
+      "moniker": {
+        "app": "webapphelm"
+      },
+      "name": "Deploy (Manifest)",
+      "refId": "2",
+      "requisiteStageRefIds": [
+        "1"
+      ],
+      "skipExpressionEvaluation": false,
+      "source": "artifact",
+      "trafficManagement": {
+        "enabled": false,
+        "options": {
+          "enableTraffic": false,
+          "services": []
+        }
+      },
+      "type": "deployManifest"
+    }
+  ],
+  "triggers": [
+    {
+      "account": "my-docker-registry-2",
+      "enabled": true,
+      "expectedArtifactIds": [
+        "afe26c88-653f-4d45-aca4-e0587a4bf4dd"
+      ],
+      "organization": "tusharstudy2020",
+      "registry": "index.docker.io",
+      "repository": "tusharstudy2020/webappimages",
+      "type": "docker"
+    }
+  ],
+  "updateTs": "1588665750000"
+}

@@ -1,0 +1,131 @@
+{
+  "expectedArtifacts": [
+    {
+      "defaultArtifact": {
+        "customKind": true,
+        "id": "48ab62c6-52fc-4a55-a6eb-f9b4b6bcd145"
+      },
+      "displayName": "wonderful-mayfly-78",
+      "id": "da46d88f-241c-4099-adf1-e30fdb1cbb7b",
+      "matchArtifact": {
+        "artifactAccount": "my-github-artifact-account",
+        "customKind": true,
+        "id": "89940efe-e6b6-4b2b-8e35-35140d2a58cb",
+        "name": "values/uat.yml",
+        "type": "github/file"
+      },
+      "useDefaultArtifact": false,
+      "usePriorArtifact": true
+    }
+  ],
+  "keepWaitingPipelines": false,
+  "lastModifiedBy": "anonymous",
+  "limitConcurrent": true,
+  "stages": [
+    {
+      "continuePipeline": false,
+      "failPipeline": true,
+      "job": "webapp-helm_UAT_YAML_Changes",
+      "master": "my-jenkins-master-new",
+      "name": "Jenkins",
+      "parameters": {},
+      "propertyFile": "build_uat_yml.properties",
+      "refId": "1",
+      "requisiteStageRefIds": [],
+      "type": "jenkins"
+    },
+    {
+      "expectedArtifacts": [
+        {
+          "defaultArtifact": {
+            "customKind": true,
+            "id": "817313a4-399a-4de5-8464-0f9849e57926"
+          },
+          "displayName": "tough-seahorse-90",
+          "id": "84c69b15-6a73-4db5-aabb-f490f6a20095",
+          "matchArtifact": {
+            "artifactAccount": "embedded-artifact",
+            "id": "f14060a2-d9a1-40f2-b0e8-511e2df61b33",
+            "name": "uat-yml",
+            "type": "embedded/base64"
+          },
+          "useDefaultArtifact": false,
+          "usePriorArtifact": false
+        }
+      ],
+      "inputArtifacts": [
+        {
+          "account": "my-github-artifact-account",
+          "artifact": {
+            "artifactAccount": "my-github-artifact-account",
+            "id": "5916028f-3cd9-4e1d-a8b9-ae848303b437",
+            "name": "helm-template/helm-chart-yml-0.1.0.tgz",
+            "reference": "https://api.github.com/repos/patiltussh/webapp-helm/contents/helm-template/helm-chart-yml-0.1.0.tgz",
+            "type": "github/file"
+          }
+        },
+        {
+          "account": "",
+          "id": "da46d88f-241c-4099-adf1-e30fdb1cbb7b"
+        },
+        {
+          "account": "my-github-artifact-account",
+          "artifact": {
+            "artifactAccount": "my-github-artifact-account",
+            "id": "0125be03-cda0-4b13-b602-935f6cb5313a",
+            "name": "values/cluster.yml",
+            "reference": "https://api.github.com/repos/patiltussh/webapp-helm/contents/values/cluster.yml",
+            "type": "github/file"
+          }
+        }
+      ],
+      "name": "Bake (Manifest)",
+      "namespace": "uat",
+      "outputName": "uat-yml",
+      "overrides": {},
+      "refId": "2",
+      "requisiteStageRefIds": [
+        "1"
+      ],
+      "templateRenderer": "HELM2",
+      "type": "bakeManifest"
+    },
+    {
+      "account": "kubernetes-admin",
+      "cloudProvider": "kubernetes",
+      "manifestArtifactId": "84c69b15-6a73-4db5-aabb-f490f6a20095",
+      "moniker": {
+        "app": "webapphelm"
+      },
+      "name": "Deploy (Manifest)",
+      "refId": "3",
+      "requisiteStageRefIds": [
+        "2"
+      ],
+      "skipExpressionEvaluation": false,
+      "source": "artifact",
+      "trafficManagement": {
+        "enabled": false,
+        "options": {
+          "enableTraffic": false,
+          "services": []
+        }
+      },
+      "type": "deployManifest"
+    }
+  ],
+  "triggers": [
+    {
+      "enabled": true,
+      "expectedArtifactIds": [
+        "da46d88f-241c-4099-adf1-e30fdb1cbb7b"
+      ],
+      "project": "patiltussh",
+      "secret": "spinnaker",
+      "slug": "webapp-helm",
+      "source": "github",
+      "type": "git"
+    }
+  ],
+  "updateTs": "1588657636000"
+}

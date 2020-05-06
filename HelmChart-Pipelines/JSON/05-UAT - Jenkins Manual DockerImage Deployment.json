@@ -1,0 +1,101 @@
+{
+  "expectedArtifacts": [],
+  "keepWaitingPipelines": false,
+  "lastModifiedBy": "anonymous",
+  "limitConcurrent": true,
+  "stages": [
+    {
+      "expectedArtifacts": [
+        {
+          "defaultArtifact": {
+            "customKind": true,
+            "id": "e87004ea-9e79-4993-ab37-a818c81d1df1"
+          },
+          "displayName": "weak-puma-66",
+          "id": "49431ea5-591c-4f24-b30e-b32285fc00b7",
+          "matchArtifact": {
+            "artifactAccount": "embedded-artifact",
+            "id": "3062c395-49f7-4142-9b4e-1d4911790b1b",
+            "name": "uat-manual",
+            "type": "embedded/base64"
+          },
+          "useDefaultArtifact": false,
+          "usePriorArtifact": false
+        }
+      ],
+      "inputArtifacts": [
+        {
+          "account": "my-github-artifact-account",
+          "artifact": {
+            "artifactAccount": "my-github-artifact-account",
+            "id": "a6e59c65-b7d7-4be5-9d4e-5a8f43694d9a",
+            "name": "helm-template/helm-chart-yml-0.1.0.tgz",
+            "reference": "https://api.github.com/repos/patiltussh/webapp-helm/contents/helm-template/helm-chart-yml-0.1.0.tgz",
+            "type": "github/file"
+          }
+        },
+        {
+          "account": "my-github-artifact-account",
+          "artifact": {
+            "artifactAccount": "my-github-artifact-account",
+            "id": "b31ce948-098f-4ab1-af32-ebb33c975545",
+            "name": "values/uat.yml",
+            "reference": "https://api.github.com/repos/patiltussh/webapp-helm/contents/values/uat.yml",
+            "type": "github/file"
+          }
+        },
+        {
+          "account": "my-github-artifact-account",
+          "artifact": {
+            "artifactAccount": "my-github-artifact-account",
+            "id": "cb8f39d6-ba31-4834-a208-252a7d650797",
+            "name": "values/uat-manual.yml",
+            "reference": "https://api.github.com/repos/patiltussh/webapp-helm/contents/values/uat-manual.yml",
+            "type": "github/file"
+          }
+        }
+      ],
+      "name": "Bake (Manifest)",
+      "namespace": "uat",
+      "outputName": "uat-manual",
+      "overrides": {},
+      "refId": "1",
+      "requisiteStageRefIds": [],
+      "templateRenderer": "HELM2",
+      "type": "bakeManifest"
+    },
+    {
+      "account": "kubernetes-admin",
+      "cloudProvider": "kubernetes",
+      "manifestArtifactId": "49431ea5-591c-4f24-b30e-b32285fc00b7",
+      "moniker": {
+        "app": "webapphelm"
+      },
+      "name": "Deploy (Manifest)",
+      "refId": "2",
+      "requisiteStageRefIds": [
+        "1"
+      ],
+      "skipExpressionEvaluation": false,
+      "source": "artifact",
+      "trafficManagement": {
+        "enabled": false,
+        "options": {
+          "enableTraffic": false,
+          "services": []
+        }
+      },
+      "type": "deployManifest"
+    }
+  ],
+  "triggers": [
+    {
+      "enabled": true,
+      "job": "webapp-helm_UAT_Manual_Docker_Image_Deployment",
+      "master": "my-jenkins-master-new",
+      "propertyFile": "build.properties",
+      "type": "jenkins"
+    }
+  ],
+  "updateTs": "1588660775000"
+}
